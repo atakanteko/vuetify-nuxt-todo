@@ -24,6 +24,7 @@
         <v-list-item
           v-for='item in items'
           :key='item.title'
+          :to='item.link'
           link
         >
           <v-list-item-icon>
@@ -44,7 +45,7 @@
     </v-app-bar>
 
     <v-main>
-      <!--  -->
+      <Nuxt />
     </v-main>
   </v-app>
 </template>
@@ -55,8 +56,8 @@ export default {
     return {
       drawer: null,
       items: [
-        { title: 'Todo', icon: 'mdi-view-dashboard' },
-        { title: 'About', icon: 'mdi-help-box' },
+        { title: 'Todo', icon: 'mdi-format-list-checks', link: '/' },
+        { title: 'About', icon: 'mdi-help-box', link: '/about' },
       ],
       right: null,
     };
