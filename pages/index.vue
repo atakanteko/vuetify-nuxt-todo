@@ -8,7 +8,7 @@
       outlined
       @keydown.enter='addTodo(todo)'
     ></v-text-field>
-    <v-list class='pt-0' flat>
+    <v-list v-if='tasks.length' class='pt-0' flat>
       <v-list-item-group multiple>
         <div v-for='(item,index) in this.tasks'
              :key='index'
@@ -39,6 +39,11 @@
         </div>
       </v-list-item-group>
     </v-list>
+
+    <div v-else class='no-task'>
+      <v-icon color='primary' size='100'>mdi-check</v-icon>
+      <h3 class='primary--text'>No Task</h3>
+    </div>
   </div>
 </template>
 
@@ -98,5 +103,16 @@ export default {
 
 .shadow {
   background-color: $light-blue;
+}
+
+.no-task {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0.7;
 }
 </style>
