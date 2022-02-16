@@ -1,5 +1,13 @@
 <template>
   <div class='home pa-6'>
+    <v-text-field
+      v-model='todo'
+      append-icon='mdi-plus'
+      clearable
+      label='Add Task'
+      outlined
+      @keydown.enter='addTodo(todo)'
+    ></v-text-field>
     <v-list class='pt-0' flat>
       <v-list-item-group multiple>
         <div v-for='(item,index) in this.tasks'
@@ -43,6 +51,7 @@ export default {
       icons: {
         delete: 'mdi-delete',
       },
+      todo: '',
       checkedNames: [],
       tasks: [
         {
@@ -70,6 +79,16 @@ export default {
     },
     removeTodo(taskId) {
       this.tasks = this.tasks.filter((item) => item.id !== taskId);
+    },
+    addTodo(todo) {
+      const todoCapitalized = todo.charAt(0).toUpperCase() + todo.slice(1);
+      const newTodo = {
+        id: this.tasks.length + 1,
+        title: todoCapitalized,
+        done: false,
+      };
+      this.tasks.push(newTodo);
+      this.todo = '';
     },
   },
 };
