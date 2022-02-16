@@ -18,6 +18,13 @@
                   {{ item.title }}
                 </v-list-item-title>
               </v-list-item-content>
+              <v-list-item-action>
+                <v-btn
+                  icon
+                  @click.stop='removeTodo(item.id)'>
+                  <v-icon color='primary'>{{ icons.delete }}</v-icon>
+                </v-btn>
+              </v-list-item-action>
             </template>
           </v-list-item>
           <v-divider></v-divider>
@@ -28,10 +35,14 @@
 </template>
 
 <script>
+
 export default {
   name: 'IndexPage',
   data() {
     return {
+      icons: {
+        delete: 'mdi-delete',
+      },
       checkedNames: [],
       tasks: [
         {
@@ -56,6 +67,9 @@ export default {
     toggleDone(taskId) {
       const task = this.tasks.filter((item) => item.id === taskId)[0];
       task.done = !task.done;
+    },
+    removeTodo(taskId) {
+      this.tasks = this.tasks.filter((item) => item.id !== taskId);
     },
   },
 };
