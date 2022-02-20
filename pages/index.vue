@@ -1,53 +1,64 @@
 <template>
-  <div class='home pa-6'>
+  <div class="home pa-6">
     <v-text-field
-      v-model='todo'
-      append-icon='mdi-plus'
+      v-model="todo"
+      append-icon="mdi-plus"
       clearable
-      label='Add Task'
+      label="Add Task"
       outlined
-      @keydown.enter='addTodo(todo)'
-    ></v-text-field>
-    <v-list v-if='tasks.length' class='pt-0' flat>
+      @keydown.enter="addTodoAction(todo)"
+    />
+    <v-list v-if="getTasks.length" class="pt-0" flat>
       <v-list-item-group multiple>
-        <div v-for='(item,index) in this.tasks'
-             :key='index'
-             :class='{ shadow:item.done }'>
-          <v-list-item @click='toggleDone(item.id)'>
-            <template v-slot:default>
+        <div
+          v-for="(item,index) in getTasks"
+          :key="index"
+          :class="{ shadow:item.done }"
+        >
+          <v-list-item @click="toggleDone(item.id)">
+            <template #default>
               <v-list-item-action>
                 <v-checkbox
-                  :input-value='item.done'
-                ></v-checkbox>
+                  :input-value="item.done"
+                />
               </v-list-item-action>
               <v-list-item-content>
                 <v-list-item-title
-                  :class='{"text-decoration-line-through":item.done}'>
+                  :class="{'`text-decoration-line-through`':item.done}"
+                >
                   {{ item.title }}
                 </v-list-item-title>
               </v-list-item-content>
               <v-list-item-action>
                 <v-btn
                   icon
-                  @click.stop='removeTodo(item.id)'>
-                  <v-icon color='primary'>{{ icons.delete }}</v-icon>
+                  @click.stop="removeTodo(item.id)"
+                >
+                  <v-icon color="primary">
+                    {{ icons.delete }}
+                  </v-icon>
                 </v-btn>
               </v-list-item-action>
             </template>
           </v-list-item>
-          <v-divider></v-divider>
+          <v-divider />
         </div>
       </v-list-item-group>
     </v-list>
 
-    <div v-else class='no-task'>
-      <v-icon color='primary' size='100'>mdi-check</v-icon>
-      <h3 class='primary--text'>No Task</h3>
+    <div v-else class="no-task">
+      <v-icon color="primary" size="100">
+        mdi-check
+      </v-icon>
+      <h3 class="primary--text">
+        No Task
+      </h3>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
   name: 'IndexPage',
@@ -58,41 +69,19 @@ export default {
       },
       todo: '',
       checkedNames: [],
-      tasks: [
-        {
-          id: 1,
-          title: 'Wake Up',
-          done: false,
-        },
-        {
-          id: 2,
-          title: 'Get a Cup of Tea',
-          done: false,
-        },
-        {
-          id: 3,
-          title: 'Drink Tea',
-          done: false,
-        },
-      ],
     };
   },
+  computed: {
+    ...mapGetters('store', ['getTasks']),
+  },
   methods: {
-    toggleDone(taskId) {
-      const task = this.tasks.filter((item) => item.id === taskId)[0];
-      task.done = !task.done;
-    },
-    removeTodo(taskId) {
-      this.tasks = this.tasks.filter((item) => item.id !== taskId);
-    },
-    addTodo(todo) {
-      const todoCapitalized = todo.charAt(0).toUpperCase() + todo.slice(1);
-      const newTodo = {
-        id: this.tasks.length + 1,
-        title: todoCapitalized,
-        done: false,
-      };
-      this.tasks.push(newTodo);
+    ...mapActions({
+      addTodo: 'store/addTodo',
+      removeTodo: 'store/removeTodo',
+      toggleDone: 'store/toggleDone',
+    }),
+    addTodoAction(todo) {
+      this.addTodo(todo);
       this.todo = '';
     },
   },
