@@ -2,14 +2,7 @@
   <div class="home pa-6">
     <FieldAddTask />
     <FieldTaskList v-if="getTasks.length" :get-tasks="getTasks" />
-    <div v-else class="no-task">
-      <v-icon color="primary" size="100">
-        mdi-check
-      </v-icon>
-      <h3 class="primary--text">
-        No Task
-      </h3>
-    </div>
+    <FieldNoTask v-else />
   </div>
 </template>
 
@@ -17,12 +10,14 @@
 import { mapGetters } from 'vuex';
 import FieldAddTask from '../components/Todo/FieldAddTask';
 import FieldTaskList from '../components/Todo/FieldTaskList';
+import FieldNoTask from '../components/Todo/FieldNoTask';
 
 export default {
   name: 'IndexPage',
   components: {
     FieldAddTask,
     FieldTaskList,
+    FieldNoTask,
   },
 
   computed: {
@@ -31,8 +26,6 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-@import 'assets/variables';
-
 .no-task {
   position: absolute;
   top: 50%;
