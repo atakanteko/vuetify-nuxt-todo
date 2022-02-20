@@ -1,13 +1,6 @@
 <template>
   <div class="home pa-6">
-    <v-text-field
-      v-model="todo"
-      append-icon="mdi-plus"
-      clearable
-      label="Add Task"
-      outlined
-      @keydown.enter="addTodoAction(todo)"
-    />
+    <FieldAddTask />
     <v-list v-if="getTasks.length" class="pt-0" flat>
       <v-list-item-group multiple>
         <div
@@ -59,9 +52,13 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
+import FieldAddTask from '../components/Todo/FieldAddTask';
 
 export default {
   name: 'IndexPage',
+  components: {
+    FieldAddTask,
+  },
   data() {
     return {
       icons: {
@@ -76,14 +73,9 @@ export default {
   },
   methods: {
     ...mapActions({
-      addTodo: 'store/addTodo',
       removeTodo: 'store/removeTodo',
       toggleDone: 'store/toggleDone',
     }),
-    addTodoAction(todo) {
-      this.addTodo(todo);
-      this.todo = '';
-    },
   },
 };
 </script>
