@@ -16,18 +16,21 @@ export const state = () => ({
       done: false,
     },
   ],
+  isSnackbarOpen: false,
 });
 export const getters = {
   getTasks: state => state.tasks,
+  getSnackbarStatus: state => state.isSnackbarOpen,
 };
 export const actions = {
-  addTodo: (context, todo) => {
+  addTodo: async (context, todo) => {
     const todoCapitalized = todo.charAt(0).toUpperCase() + todo.slice(1);
     const newTodo = {
       id: context.getters.getTasks.length + 1,
       title: todoCapitalized,
       done: false,
     };
+    await context.dispatch('toggleSnackbarStatus', true);
     context.commit('ADD_NEW_TASK', newTodo);
   },
   removeTodo: (context, todoId) => {
@@ -37,6 +40,9 @@ export const actions = {
   toggleDone: (context, taskId) => {
     const task = context.getters.getTasks.filter(item => item.id === taskId)[0];
     context.commit('TOGGLE_DONE_STATUS', task);
+  },
+  toggleSnackbarStatus: (context, snackbarStatus) => {
+    context.commit('TOGGLE_SNACKBAR', snackbarStatus);
   },
 };
 export const mutations = {
@@ -48,5 +54,8 @@ export const mutations = {
   },
   TOGGLE_DONE_STATUS(state, targetTask) {
     targetTask.done = !targetTask.done;
+  },
+  TOGGLE_SNACKBAR(state, snackbarStatus) {
+    state.isSnackbarOpen = snackbarStatus;
   },
 };

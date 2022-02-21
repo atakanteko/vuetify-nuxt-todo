@@ -10,7 +10,7 @@
           color="pink"
           text
           v-bind="attrs"
-          @click="snackbar = false"
+          @click="$store.dispatch('store/toggleSnackbarStatus',false)"
         >
           Close
         </v-btn>
@@ -19,10 +19,20 @@
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   data: () => ({
     snackbar: false,
-    text: 'Hello, I\'m a snackbar',
+    text: 'New todo has been added.',
   }),
+  computed: {
+    ...mapGetters('store', ['getSnackbarStatus']),
+  },
+  watch: {
+    getSnackbarStatus() {
+      this.snackbar = this.getSnackbarStatus;
+    },
+  },
 };
 </script>
