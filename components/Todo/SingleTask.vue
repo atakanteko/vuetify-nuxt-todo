@@ -14,16 +14,7 @@
             {{ item.title }}
           </v-list-item-title>
         </v-list-item-content>
-        <v-list-item-action>
-          <v-btn
-            icon
-            @click.stop="$store.dispatch('store/setDialogStatus',{dialogStatus:true,id:item.id})"
-          >
-            <v-icon color="primary">
-              {{ icons.delete }}
-            </v-icon>
-          </v-btn>
-        </v-list-item-action>
+        <MenuItems />
       </template>
     </v-list-item>
     <v-divider />
@@ -32,9 +23,13 @@
 
 <script>
 import { mapActions } from 'vuex';
+import MenuItems from './MenuItems';
 
 export default {
   name: 'SingleTask',
+  components: {
+    MenuItems,
+  },
   props: {
     item: {
       type: Object,
