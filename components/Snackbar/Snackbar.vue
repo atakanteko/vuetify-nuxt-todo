@@ -2,8 +2,9 @@
   <div class="text-center ma-2">
     <v-snackbar
       v-model="snackbar"
+      timeout="-1"
     >
-      {{ text }}
+      {{ $store.getters['store/getSnackbarMessage'] }}
 
       <template #action="{ attrs }">
         <v-btn
@@ -19,15 +20,25 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  data: () => ({
-    snackbar: false,
-    text: 'New todo has been added.',
-  }),
+  data() {
+    return {
+      snackbar: this.$store.state.isSnackbarOpen,
+      text: '',
+    };
+  },
   computed: {
-    ...mapGetters('store', ['getSnackbarStatus']),
+    ...mapGetters('store', ['getSnackbarStatus', 'getSnackbarMessage']),
+  },
+  methods: {
+    ...mapActions({
+      setSnackBarStatus: 'store/toggleSnackbarStatus',
+    }),
+    doSnackbarStatusFalse() {
+      this.setSnackBarStatus(false);
+    },
   },
   watch: {
     getSnackbarStatus() {
