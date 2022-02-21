@@ -18,11 +18,15 @@ export const state = () => ({
   ],
   isSnackbarOpen: false,
   snackBarMessage: '',
+  isDialogOpen: false,
+  removeTodoId: null,
 });
 export const getters = {
   getTasks: state => state.tasks,
   getSnackbarStatus: state => state.isSnackbarOpen,
   getSnackbarMessage: state => state.snackBarMessage,
+  getDialogStatus: state => state.isDialogOpen,
+  getRemoveTodoId: state => state.removeTodoId,
 };
 export const actions = {
   addTodo: async (context, todo) => {
@@ -32,9 +36,6 @@ export const actions = {
       title: todoCapitalized,
       done: false,
     };
-    if (context.getters.getSnackbarStatus) {
-      console.log('32');
-    }
     await context.dispatch('toggleSnackbarStatus', true);
     await context.dispatch('setSnackbarMessage', 'New todo has been added.');
     context.commit('ADD_NEW_TASK', newTodo);
@@ -44,6 +45,7 @@ export const actions = {
     await context.dispatch('toggleSnackbarStatus', true);
     await context.dispatch('setSnackbarMessage', 'A todo has been removed.');
     context.commit('REMOVE_TODO', newTodoList);
+    await context.dispatch('setDialogStatus', { dialogStatus: false, id: null });
   },
   toggleDone: (context, taskId) => {
     const task = context.getters.getTasks.filter(item => item.id === taskId)[0];
@@ -54,6 +56,13 @@ export const actions = {
   },
   setSnackbarMessage: (context, message) => {
     context.commit('SET_SNACKBAR_MESSAGE', message);
+  },
+  setDialogStatus: async (context, { dialogStatus, id }) => {
+    await context.dispatch('setRemoveTodoId', id);
+    context.commit('SET_DIALOG_STATUS', dialogStatus);
+  },
+  setRemoveTodoId: (context, id) => {
+    context.commit('SET_REMOVE_TODO_ID', id);
   },
 };
 export const mutations = {
@@ -69,7 +78,13 @@ export const mutations = {
   TOGGLE_SNACKBAR(state, snackbarStatus) {
     state.isSnackbarOpen = snackbarStatus;
   },
-  SET_SNACKBAR_MESSAGE(state, message) {
-    state.snackBarMessage = message;
+  SET_SNACKBAR_MESSAGE(state, dialogStatus) {
+    state.snackBarMessage = dialogStatus;
+  },
+  SET_DIALOG_STATUS(state, message) {
+    state.isDialogOpen = message;
+  },
+  SET_REMOVE_TODO_ID(state, id) {
+    state.removeTodoId = id;
   },
 };

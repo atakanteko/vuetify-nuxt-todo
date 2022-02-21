@@ -17,7 +17,7 @@
         <v-list-item-action>
           <v-btn
             icon
-            @click.stop="removeTodo(item.id)"
+            @click.stop="$store.dispatch('store/setDialogStatus',{dialogStatus:true,id:item.id})"
           >
             <v-icon color="primary">
               {{ icons.delete }}
