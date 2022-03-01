@@ -14,7 +14,7 @@
             {{ item.title }}
           </v-list-item-title>
         </v-list-item-content>
-        <MenuItems :task-id="item.id" />
+        <MenuItems :index-info="indexInfo" :task-id="item.id" />
       </template>
     </v-list-item>
     <v-divider />
@@ -31,6 +31,10 @@ export default {
     MenuItems,
   },
   props: {
+    indexInfo: {
+      type: Number,
+      required: true,
+    },
     item: {
       type: Object,
       default: null,

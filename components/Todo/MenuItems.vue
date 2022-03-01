@@ -1,6 +1,11 @@
 <template>
   <div>
-    <EditDialog :dialog="editStatus" />
+    <EditDialog
+      :dialog="editStatus"
+      :task-id="taskId"
+      :todo-title="todoTitle"
+      @changeEditDialogStatus="changeEditDialogStatus"
+    />
     <Dialog :dialog="deleteStatus" :task-id="taskId" @changeDialog="changeDialogStatus" />
     <v-menu
       bottom
@@ -18,10 +23,11 @@
 
       <v-list>
         <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
-          @click="handleClick(i)"
+          v-for="(item, index) in items"
+          :key="index"
+          @click="handleClick(index)"
         >
+          {{ index }}
           <v-list-item-icon>
             <v-icon v-text="item.icon" />
           </v-list-item-icon>
@@ -42,6 +48,10 @@ import Dialog from '../Dialog/Dialog';
 export default {
   components: { Dialog, EditDialog },
   props: {
+    indexInfo: {
+      type: Number,
+      required: true,
+    },
     taskId: {
       type: Number,
       required: true,
@@ -52,10 +62,14 @@ export default {
       targetId: null,
       editStatus: false,
       deleteStatus: false,
+      todoTitle: '',
       items: [
         {
           title: 'Edit',
           icon: 'mdi-pencil',
+          click() {
+            this.editStatus = true;
+          },
         },
         {
           title: 'Due date',
@@ -75,12 +89,17 @@ export default {
     ...mapActions({
       deleteTodo: 'store/removeTodo',
     }),
-    handleClick(index) {
-      this.targetId = index;
-      this.items[index].click.call(this);
+    handleClick(i) {
+      console.log('a', i);
+      this.items[i].click.call(this);
+      const targetTitle = this.$store.getters['store/getTasks'].find(item => item.id === (this.indexInfo + 1));
+      this.todoTitle = targetTitle.title;
     },
     changeDialogStatus(status) {
       this.deleteStatus = status;
+    },
+    changeEditDialogStatus(status) {
+      this.editStatus = status;
     },
   },
 };
