@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-dialog
-      v-model="dialog"
+      v-model="decline"
       max-width="600px"
       persistent
     >
@@ -15,10 +15,10 @@
           >
             <v-text-field
               v-model="title"
-              :rules="[rules.required, rules.counter]"
+              :rules="[isInputEmpty]"
               counter
               label="Title"
-              maxlength="20"
+              maxlength="70"
             />
           </v-col>
         </v-card-text>
@@ -27,11 +27,12 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="false"
+            @click="closeDialog"
           >
             Close
           </v-btn>
           <v-btn
+            :disabled="disabledBtn"
             color="blue darken-1"
             text
             @click="false"
@@ -52,16 +53,37 @@ export default {
       required: true,
       default: false,
     },
+    todoTitle: {
+      type: String,
+      required: true,
+    },
   },
   data() {
     return {
-      title: 'Preliminary report',
+      disabledBtn: false,
+      isInputEmpty: true,
+      decline: null,
+      title: this.todoTitle,
       email: '',
-      rules: {
-        required: value => !!value || 'Required.',
-        counter: value => value.length <= 20 || 'Max 20 characters',
-      },
     };
+  },
+
+  watch: {
+    title(val) {
+      console.log(val);
+      this.isInputEmpty = val.trim().length !== 0 || 'This field cannot be left blank.';
+      val.trim().length === 0 ? this.disabledBtn = true : this.disabledBtn = false;
+      console.log(this.isInputEmpty);
+    },
+    dialog(newValue) {
+      this.decline = newValue;
+    },
+  },
+  methods: {
+    closeDialog() {
+      this.decline = false;
+      this.$emit('changeEditDialogStatus', false);
+    },
   },
 };
 </script>
