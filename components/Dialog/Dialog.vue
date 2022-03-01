@@ -1,7 +1,7 @@
 <template>
   <v-row justify="center">
     <v-dialog
-      v-model="$store.getters['store/getDialogStatus']"
+      v-model="decline"
       max-width="290"
       persistent
     >
@@ -17,14 +17,14 @@
           <v-btn
             color="green darken-1"
             text
-            @click="$store.dispatch('store/setDialogStatus',{ dialogStatus: false, id: null })"
+            @click="decline = false"
           >
             Decline
           </v-btn>
           <v-btn
             color="green darken-1"
             text
-            @click="$store.dispatch('store/removeTodo',$store.getters['store/getRemoveTodoId'])"
+            @click="deleteTodo"
           >
             Accept
           </v-btn>
@@ -35,10 +35,39 @@
 </template>
 <script>
 export default {
+  props: {
+    dialog: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    taskId: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+  },
   data() {
     return {
-      dialog: true,
+      decline: null,
     };
+  },
+  computed: {
+    dialogStatus() {
+      return this.dialog;
+    },
+  },
+  watch: {
+    dialog(newValue) {
+      this.decline = newValue;
+    },
+  },
+  methods: {
+    deleteTodo() {
+      this.decline = false;
+      this.$emit('changeDialog', false);
+      this.$store.dispatch('store/removeTodo', this.taskId);
+    },
   },
 };
 </script>
