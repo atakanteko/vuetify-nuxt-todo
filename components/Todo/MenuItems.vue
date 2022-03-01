@@ -13,6 +13,7 @@
     >
       <template #activator="{ on, attrs }">
         <v-btn
+          class="mt-6"
           icon
           v-bind="attrs"
           v-on="on"
