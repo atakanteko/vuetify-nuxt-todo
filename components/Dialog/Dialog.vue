@@ -17,7 +17,7 @@
           <v-btn
             color="green darken-1"
             text
-            @click="decline = false"
+            @click="closeDialog"
           >
             Decline
           </v-btn>
@@ -67,6 +67,10 @@ export default {
       this.decline = false;
       this.$emit('changeDialog', false);
       this.$store.dispatch('store/removeTodo', this.taskId);
+    },
+    closeDialog() {
+      this.decline = false;
+      this.$emit('changeDialog', false);
     },
   },
 };
