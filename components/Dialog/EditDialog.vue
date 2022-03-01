@@ -63,12 +63,13 @@ export default {
       disabledBtn: false,
       isInputEmpty: true,
       decline: null,
-      title: this.todoTitle,
-      email: '',
+      title: null,
     };
   },
-
   watch: {
+    todoTitle() {
+      this.title = this.todoTitle;
+    },
     title(val) {
       console.log(val);
       this.isInputEmpty = val.trim().length !== 0 || 'This field cannot be left blank.';
