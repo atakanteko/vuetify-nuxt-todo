@@ -74,7 +74,6 @@
     <v-main>
       <Nuxt />
       <Snackbar />
-      <Dialog />
     </v-main>
   </v-app>
 </template>
