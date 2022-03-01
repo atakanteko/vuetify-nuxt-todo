@@ -17,6 +17,7 @@
       <v-list-item
         v-for="(item, i) in items"
         :key="i"
+        @click="handleClick(taskId)"
       >
         <v-list-item-icon>
           <v-icon v-text="item.icon" />
@@ -30,14 +31,39 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
+  props: {
+    taskId: {
+      type: Number,
+      required: true,
+    },
+  },
   data: () => ({
     items: [
-      { title: 'Edit', icon: 'mdi-pencil' },
-      { title: 'Due date', icon: 'mdi-calendar-range' },
-      { title: 'Delete', icon: 'mdi-delete' },
+      {
+        title: 'Edit',
+        icon: 'mdi-pencil',
+      },
+      {
+        title: 'Due date',
+        icon: 'mdi-calendar-range',
+      },
+      {
+        title: 'Delete',
+        icon: 'mdi-delete',
+      },
     ],
   }),
+  methods: {
+    ...mapActions({
+      deleteTodo: 'store/removeTodo',
+    }),
+    handleClick(taskId) {
+      this.deleteTodo(taskId);
+    },
+  },
 };
 </script>
 <style scoped></style>
