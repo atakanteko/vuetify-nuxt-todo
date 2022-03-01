@@ -5,6 +5,7 @@
         v-for="(item,index) in getTasks"
         :key="index"
         :class="{ shadow:item.done }"
+        :index-info="index"
         :item="item"
       />
     </v-list-item-group>
