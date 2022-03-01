@@ -14,7 +14,7 @@
             {{ item.title }}
           </v-list-item-title>
         </v-list-item-content>
-        <MenuItems />
+        <MenuItems :task-id="item.id" />
       </template>
     </v-list-item>
     <v-divider />
