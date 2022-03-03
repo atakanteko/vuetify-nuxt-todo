@@ -92,9 +92,10 @@ export const mutations = {
     state.removeTodoId = id;
   },
   EDIT_TODO(state, { editTodo, title }) {
+    const todoCapitalized = title.charAt(0).toUpperCase() + title.slice(1);
     state.tasks.forEach(item => {
       if (item.id === editTodo.id) {
-        item.title = title;
+        item.title = todoCapitalized;
       }
     });
   },
