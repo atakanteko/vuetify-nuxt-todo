@@ -28,7 +28,6 @@
           :key="index"
           @click.stop="handleClick(index)"
         >
-          {{ index }}
           <v-list-item-icon>
             <v-icon v-text="item.icon" />
           </v-list-item-icon>
@@ -91,10 +90,8 @@ export default {
       deleteTodo: 'store/removeTodo',
     }),
     handleClick(i) {
-      console.log('a', i);
       this.items[i].click.call(this);
       const targetTitle = this.$store.getters['store/getTasks'].find(item => item.id === (this.indexInfo + 1));
-      console.log(targetTitle);
       this.todoTitle = targetTitle.title;
     },
     changeDialogStatus(status) {

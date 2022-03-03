@@ -35,7 +35,7 @@
             :disabled="disabledBtn"
             color="blue darken-1"
             text
-            @click="false"
+            @click="saveEdit"
           >
             Save
           </v-btn>
@@ -71,10 +71,8 @@ export default {
       this.title = this.todoTitle;
     },
     title(val) {
-      console.log(val);
       this.isInputEmpty = val.trim().length !== 0 || 'This field cannot be left blank.';
       val.trim().length === 0 ? this.disabledBtn = true : this.disabledBtn = false;
-      console.log(this.isInputEmpty);
     },
     dialog(newValue) {
       this.decline = newValue;
@@ -82,6 +80,10 @@ export default {
   },
   methods: {
     closeDialog() {
+      this.decline = false;
+      this.$emit('changeEditDialogStatus', false);
+    },
+    saveEdit() {
       this.decline = false;
       this.$emit('changeEditDialogStatus', false);
     },
