@@ -57,6 +57,10 @@ export default {
       type: String,
       required: true,
     },
+    taskId: {
+      type: Number,
+      required: true,
+    },
   },
   data() {
     return {
@@ -84,6 +88,9 @@ export default {
       this.$emit('changeEditDialogStatus', false);
     },
     saveEdit() {
+      console.log('Task ID', this.taskId);
+      console.log('Title', this.title);
+      this.$store.dispatch('store/updateEditedTodo', { id: this.taskId, title: this.title });
       this.decline = false;
       this.$emit('changeEditDialogStatus', false);
     },

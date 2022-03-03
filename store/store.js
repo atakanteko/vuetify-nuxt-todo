@@ -64,6 +64,10 @@ export const actions = {
   setRemoveTodoId: (context, id) => {
     context.commit('SET_REMOVE_TODO_ID', id);
   },
+  updateEditedTodo: (context, { id, title }) => {
+    const editTodo = context.getters.getTasks.find(item => item.id === id);
+    context.commit('EDIT_TODO', { editTodo, title });
+  },
 };
 export const mutations = {
   ADD_NEW_TASK(state, todo) {
@@ -86,5 +90,12 @@ export const mutations = {
   },
   SET_REMOVE_TODO_ID(state, id) {
     state.removeTodoId = id;
+  },
+  EDIT_TODO(state, { editTodo, title }) {
+    state.tasks.forEach(item => {
+      if (item.id === editTodo.id) {
+        item.title = title;
+      }
+    });
   },
 };
